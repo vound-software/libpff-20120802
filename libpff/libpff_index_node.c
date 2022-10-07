@@ -1,0 +1,875 @@
+/*
+ * Index node functions
+ *
+ * Copyright (c) 2008-2012, Joachim Metz <joachim.metz@gmail.com>
+ *
+ * Refer to AUTHORS for acknowledgements.
+ *
+ * This software is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this software.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include <common.h>
+#include <byte_stream.h>
+#include <memory.h>
+#include <types.h>
+
+#include "libpff_definitions.h"
+#include "libpff_index_node.h"
+#include "libpff_libbfio.h"
+#include "libpff_libcerror.h"
+#include "libpff_libcnotify.h"
+#include "libpff_libfmapi.h"
+
+#include "pff_index_node.h"
+
+/* Initializes the index node
+ * Returns 1 if successful or -1 on error
+ */
+int libpff_index_node_initialize(
+     libpff_index_node_t **index_node,
+     libcerror_error_t **error )
+{
+	static char *function = "libpff_index_node_initialize";
+
+	if( index_node == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid index node.",
+		 function );
+
+		return( -1 );
+	}
+	if( *index_node != NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 "%s: invalid index node value already set.",
+		 function );
+
+		return( -1 );
+	}
+	*index_node = memory_allocate_structure(
+	               libpff_index_node_t );
+
+	if( *index_node == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
+		 "%s: unable to create index node.",
+		 function );
+
+		goto on_error;
+	}
+	if( memory_set(
+	     *index_node,
+	     0,
+	     sizeof( libpff_index_node_t ) ) == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_SET_FAILED,
+		 "%s: unable to clear index node.",
+		 function );
+
+		goto on_error;
+	}
+	return( 1 );
+
+on_error:
+	if( *index_node != NULL )
+	{
+		memory_free(
+		 *index_node );
+
+		*index_node = NULL;
+	}
+	return( -1 );
+}
+
+/* Frees the index node
+ * Returns 1 if successful or -1 on error
+ */
+int libpff_index_node_free(
+     libpff_index_node_t **index_node,
+     libcerror_error_t **error )
+{
+	static char *function = "libpff_index_node_free";
+
+	if( index_node == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid index node.",
+		 function );
+
+		return( -1 );
+	}
+	if( *index_node != NULL )
+	{
+		if( ( *index_node )->data != NULL )
+		{
+			memory_free(
+			 ( *index_node )->data );
+		}
+		memory_free(
+		 *index_node );
+
+		*index_node = NULL;
+	}
+	return( 1 );
+}
+
+/* Retrieves the data of a specific entry
+ * Returns 1 if successful or -1 on error
+ */
+int libpff_index_node_get_entry_data(
+     libpff_index_node_t *index_node,
+     uint8_t entry_index,
+     uint8_t **entry_data,
+     libcerror_error_t **error )
+{
+	static char *function = "libpff_index_node_get_entry_data";
+	size_t entry_offset   = 0;
+
+	if( index_node == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid index node.",
+		 function );
+
+		return( -1 );
+	}
+	if( index_node->entries_data == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid index node - missing entries data.",
+		 function );
+
+		return( -1 );
+	}
+	if( entry_data == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid entry data.",
+		 function );
+
+		return( -1 );
+	}
+	if( entry_index > index_node->maximum_number_of_entries )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+		 "%s: invalid entry index value out of bounds.",
+		 function );
+
+		return( -1 );
+	}
+	entry_offset = (size_t) ( index_node->entry_size * entry_index );
+
+	if( entry_offset > (size_t) index_node->maximum_entries_data_size )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 "%s: entry index value exceeds maximum.",
+		 function );
+
+		return( -1 );
+	}
+	*entry_data = &( index_node->entries_data[ entry_offset ] );
+
+	return( 1 );
+}
+
+/* Reads an index node
+ * Returns 1 if successful or -1 on error
+ */
+int libpff_index_node_read(
+     libpff_index_node_t *index_node,
+     libbfio_handle_t *file_io_handle,
+     off64_t node_offset,
+     uint8_t file_type,
+     libcerror_error_t **error )
+{
+	uint8_t *index_node_data                     = NULL;
+	static char *function                        = "libpff_index_node_read";
+	ssize_t read_count                           = 0;
+	uint32_t calculated_crc                      = 0;
+	uint32_t stored_crc                          = 0;
+	uint8_t calculated_entry_size                = 0;
+	uint8_t calculated_maximum_number_of_entries = 0;
+	uint8_t index_node_type_copy                 = 0;
+	int result                                   = 0;
+
+#if defined( HAVE_DEBUG_OUTPUT )
+	uint8_t *index_node_entry_data               = NULL;
+	uint64_t value_64bit                         = 0;
+	uint32_t value_32bit                         = 0;
+	uint16_t value_16bit                         = 0;
+	uint8_t entry_index                          = 0;
+#endif
+
+	if( index_node == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid index node.",
+		 function );
+
+		return( -1 );
+	}
+	if( index_node->data != NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 "%s: invalid index node - data already set.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( file_type != LIBPFF_FILE_TYPE_32BIT )
+	 && ( file_type != LIBPFF_FILE_TYPE_64BIT ) )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+		 "%s: unsupported file type.",
+		 function );
+
+		return( -1 );
+	}
+	if( file_type == LIBPFF_FILE_TYPE_32BIT )
+	{
+		index_node->data_size                 = sizeof( pff_index_node_32bit_t );
+		index_node->maximum_entries_data_size = 496;
+	}
+	else if( file_type == LIBPFF_FILE_TYPE_64BIT )
+	{
+		index_node->data_size                 = sizeof( pff_index_node_64bit_t );
+		index_node->maximum_entries_data_size = 488;
+	}
+	index_node->data = (uint8_t *) memory_allocate(
+	                                sizeof( uint8_t ) * index_node->data_size );
+
+	if( index_node->data == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
+		 "%s: unable to create index node data.",
+		 function );
+
+		return( -1 );
+	}
+#if defined( HAVE_DEBUG_OUTPUT )
+	if( libcnotify_verbose != 0 )
+	{
+		libcnotify_printf(
+		 "%s: reading index node data at offset: %" PRIi64 " (0x%08" PRIx64 ")\n",
+		 function,
+		 node_offset,
+		 node_offset );
+	}
+#endif
+	if( libbfio_handle_seek_offset(
+	     file_io_handle,
+	     node_offset,
+	     SEEK_SET,
+	     error ) == -1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_SEEK_FAILED,
+		 "%s: unable to seek node offset: %" PRIi64 ".",
+		 function,
+		 node_offset );
+
+		return( -1 );
+	}
+	read_count = libbfio_handle_read_buffer(
+	              file_io_handle,
+	              index_node->data,
+	              index_node->data_size,
+	              error );
+
+	if( read_count != (ssize_t) index_node->data_size )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_READ_FAILED,
+		 "%s: unable to read index node data.",
+		 function );
+
+		return( -1 );
+	}
+#if defined( HAVE_DEBUG_OUTPUT )
+	if( libcnotify_verbose != 0 )
+	{
+		libcnotify_printf(
+		 "%s: index node data:\n",
+		 function );
+		libcnotify_print_data(
+		 index_node->data,
+		 index_node->data_size,
+		 0 );
+	}
+#endif
+	index_node_data = index_node->data;
+
+	if( file_type == LIBPFF_FILE_TYPE_32BIT )
+	{
+		index_node->type     = ( (pff_index_node_32bit_t *) index_node_data )->type;
+		index_node_type_copy = ( (pff_index_node_32bit_t *) index_node_data )->type_copy;
+
+		byte_stream_copy_to_uint32_little_endian(
+		 ( (pff_index_node_32bit_t *) index_node_data )->back_pointer,
+		 index_node->back_pointer );
+		byte_stream_copy_to_uint32_little_endian(
+		 ( (pff_index_node_32bit_t *) index_node_data )->crc,
+		 stored_crc );
+
+		index_node->number_of_entries         = ( (pff_index_node_32bit_t *) index_node_data )->number_of_entries;
+		index_node->maximum_number_of_entries = ( (pff_index_node_32bit_t *) index_node_data )->maximum_number_of_entries;
+		index_node->entry_size                = ( (pff_index_node_32bit_t *) index_node_data )->entry_size;
+		index_node->level                     = ( (pff_index_node_32bit_t *) index_node_data )->level;
+
+		if( ( index_node->type == LIBPFF_INDEX_TYPE_DESCRIPTOR )
+		 && ( index_node->level == PFF_INDEX_NODE_LEVEL_LEAF ) )
+		{
+			calculated_entry_size                = 16;
+			calculated_maximum_number_of_entries = 496 / 16;
+		}
+		else
+		{
+			calculated_entry_size                = 12;
+			calculated_maximum_number_of_entries = 496 / 12;
+		}
+	}
+	else if( file_type == LIBPFF_FILE_TYPE_64BIT )
+	{
+		index_node->type     = ( (pff_index_node_64bit_t *) index_node_data )->type;
+		index_node_type_copy = ( (pff_index_node_64bit_t *) index_node_data )->type_copy;
+
+		byte_stream_copy_to_uint32_little_endian(
+		 ( (pff_index_node_64bit_t *) index_node_data )->crc,
+		 stored_crc );
+		byte_stream_copy_to_uint64_little_endian(
+		 ( (pff_index_node_64bit_t *) index_node_data )->back_pointer,
+		 index_node->back_pointer );
+
+		index_node->number_of_entries         = ( (pff_index_node_64bit_t *) index_node_data )->number_of_entries;
+		index_node->maximum_number_of_entries = ( (pff_index_node_64bit_t *) index_node_data )->maximum_number_of_entries;
+		index_node->entry_size                = ( (pff_index_node_64bit_t *) index_node_data )->entry_size;
+		index_node->level                     = ( (pff_index_node_64bit_t *) index_node_data )->level;
+
+		if( ( index_node->type == LIBPFF_INDEX_TYPE_DESCRIPTOR )
+		 && ( index_node->level == PFF_INDEX_NODE_LEVEL_LEAF ) )
+		{
+			calculated_entry_size                = 32;
+			calculated_maximum_number_of_entries = 488 / 32;
+		}
+		else
+		{
+			calculated_entry_size                = 24;
+			calculated_maximum_number_of_entries = 488 / 24;
+		}
+	}
+#if defined( HAVE_DEBUG_OUTPUT )
+	if( libcnotify_verbose != 0 )
+	{
+		libcnotify_printf(
+		 "%s: number of entries\t\t\t: %" PRIu8 "\n",
+		 function,
+		 index_node->number_of_entries );
+		libcnotify_printf(
+		 "%s: maximum number of entries\t\t: %" PRIu8 "\n",
+		 function,
+		 index_node->maximum_number_of_entries );
+		libcnotify_printf(
+		 "%s: entry size\t\t\t\t: %" PRIu8 "\n",
+		 function,
+		 index_node->entry_size );
+		libcnotify_printf(
+		 "%s: node level\t\t\t\t: %" PRIu8 "\n",
+		 function,
+		 index_node->level );
+
+		if( file_type == LIBPFF_FILE_TYPE_64BIT )
+		{
+			byte_stream_copy_to_uint32_little_endian(
+			 ( (pff_index_node_64bit_t *) index_node_data )->padding1,
+			 value_32bit );
+			libcnotify_printf(
+			 "%s: padding1\t\t\t\t: 0x%08" PRIx32 "\n",
+			 function,
+			 value_32bit );
+		}
+		libcnotify_printf(
+		 "%s: index node type\t\t\t\t: 0x%02" PRIx8 "\n",
+		 function,
+		 index_node->type );
+		libcnotify_printf(
+		 "%s: index node type copy\t\t\t: 0x%02" PRIx8 "\n",
+		 function,
+		 index_node_type_copy );
+
+		if( file_type == LIBPFF_FILE_TYPE_32BIT )
+		{
+			byte_stream_copy_to_uint16_little_endian(
+			 ( (pff_index_node_32bit_t *) index_node_data )->signature,
+			 value_16bit );
+			libcnotify_printf(
+			 "%s: signature\t\t\t\t: 0x%04" PRIx16 "\n",
+			 function,
+			 value_16bit );
+
+			libcnotify_printf(
+			 "%s: back pointer\t\t\t\t: 0x%08" PRIx64 "\n",
+			 function,
+			 index_node->back_pointer );
+			libcnotify_printf(
+			 "%s: crc\t\t\t\t\t: 0x%08" PRIx32 "\n",
+			 function,
+			 stored_crc );
+		}
+		else if( file_type == LIBPFF_FILE_TYPE_64BIT )
+		{
+			byte_stream_copy_to_uint16_little_endian(
+			 ( (pff_index_node_64bit_t *) index_node_data )->signature,
+			 value_16bit );
+			libcnotify_printf(
+			 "%s: signature\t\t\t\t: 0x%04" PRIx16 "\n",
+			 function,
+			 value_16bit );
+
+			libcnotify_printf(
+			 "%s: crc\t\t\t\t\t: 0x%08" PRIx32 "\n",
+			 function,
+			 stored_crc );
+			libcnotify_printf(
+			 "%s: back pointer\t\t\t\t: 0x%08" PRIx64 "\n",
+			 function,
+			 index_node->back_pointer );
+		}
+	}
+#endif
+
+	if( index_node->type != index_node_type_copy )
+	{
+#if defined( HAVE_DEBUG_OUTPUT )
+		if( libcnotify_verbose != 0 )
+		{
+			libcnotify_printf(
+			 "%s: mismatch in index node type (0x%02" PRIx8 " != 0x%02" PRIx8 ").\n",
+			 function,
+			 index_node->type,
+			 index_node_type_copy );
+		}
+#endif
+		if( ( index_node->type != LIBPFF_INDEX_TYPE_DESCRIPTOR )
+		 && ( index_node->type != LIBPFF_INDEX_TYPE_OFFSET )
+		 && ( ( index_node_type_copy == LIBPFF_INDEX_TYPE_DESCRIPTOR )
+		   || ( index_node_type_copy == LIBPFF_INDEX_TYPE_OFFSET ) ) )
+		{
+			index_node->type = index_node_type_copy;
+		}
+	}
+	if( ( index_node->type != LIBPFF_INDEX_TYPE_DESCRIPTOR )
+	 && ( index_node->type != LIBPFF_INDEX_TYPE_OFFSET ) )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+		 "%s: unsupported index node type: 0x%02" PRIx8 ".",
+		 function,
+		 index_node->type );
+
+		return( -1 );
+	}
+	if( file_type == LIBPFF_FILE_TYPE_32BIT )
+	{
+		result = libfmapi_crc32_weak_calculate(
+		          &calculated_crc,
+		          index_node_data,
+		          500,
+		          0,
+		          error );
+	}
+	else if( file_type == LIBPFF_FILE_TYPE_64BIT )
+	{
+		result = libfmapi_crc32_weak_calculate(
+		          &calculated_crc,
+		          index_node_data,
+		          496,
+		          0,
+		          error );
+	}
+	if( result != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to calculate weak CRC-32.",
+		 function );
+
+		return( -1 );
+	}
+	if( stored_crc != calculated_crc )
+	{
+#if defined( HAVE_DEBUG_OUTPUT )
+		if( libcnotify_verbose != 0 )
+		{
+			libcnotify_printf(
+			 "%s: mismatch in CRC-32 ( 0x%08" PRIx32 " != 0x%08" PRIx32 " ).\n",
+			 function,
+			 stored_crc,
+			 calculated_crc );
+		}
+#endif
+		/* TODO smart error handling */
+	}
+	if( ( index_node->entry_size != 0 )
+	 && ( index_node->entry_size != calculated_entry_size ) )
+	{
+#if defined( HAVE_DEBUG_OUTPUT )
+		if( libcnotify_verbose != 0 )
+		{
+			libcnotify_printf(
+			 "%s: entry size mismatch (calculated: %" PRIu8 ", stored: %" PRIu8 ").\n",
+			 function,
+			 calculated_entry_size,
+			 index_node->entry_size );
+		}
+#endif
+		index_node->entry_size = calculated_entry_size;
+	}
+	if( ( index_node->maximum_number_of_entries != 0 )
+	 && ( index_node->maximum_number_of_entries != calculated_maximum_number_of_entries ) )
+	{
+#if defined( HAVE_DEBUG_OUTPUT )
+		if( libcnotify_verbose != 0 )
+		{
+			libcnotify_printf(
+			 "%s: maximum number of entries mismatch (calculated: %" PRIu8 ", stored: %" PRIu8 ").\n",
+			 function,
+			 calculated_maximum_number_of_entries,
+			 index_node->maximum_number_of_entries );
+		}
+#endif
+		index_node->maximum_number_of_entries = calculated_maximum_number_of_entries;
+	}
+	if( index_node->number_of_entries > index_node->maximum_number_of_entries )
+	{
+#if defined( HAVE_DEBUG_OUTPUT )
+		if( libcnotify_verbose != 0 )
+		{
+			libcnotify_printf(
+			 "%s: number of entries: %" PRIu8 ", exceeds maximum: %" PRIu8 ".",
+			 function,
+			 index_node->number_of_entries,
+			 index_node->maximum_number_of_entries );
+		}
+#endif
+		index_node->number_of_entries = index_node->maximum_number_of_entries;
+	}
+	if( ( (uint16_t) index_node->number_of_entries * (uint16_t) index_node->entry_size ) > index_node->maximum_entries_data_size )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 "%s: size of entries: %" PRIu16 ", exceeds maximum: %" PRIu16 ".",
+		 function,
+		 index_node->number_of_entries * index_node->entry_size,
+		 index_node->maximum_entries_data_size );
+
+		return( -1 );
+	}
+	if( file_type == LIBPFF_FILE_TYPE_32BIT )
+	{
+		index_node->entries_data = ( (pff_index_node_32bit_t *) index_node_data )->entries_data;
+	}
+	else if( file_type == LIBPFF_FILE_TYPE_64BIT )
+	{
+		index_node->entries_data = ( (pff_index_node_64bit_t *) index_node_data )->entries_data;
+	}
+#if defined( HAVE_DEBUG_OUTPUT )
+	if( libcnotify_verbose != 0 )
+	{
+		index_node_entry_data = index_node->entries_data;
+
+		/* Print all the entries
+		 */
+		for( entry_index = 0;
+		     entry_index < index_node->maximum_number_of_entries;
+		     entry_index++ )
+		{
+			if( entry_index == index_node->number_of_entries )
+			{
+				libcnotify_printf(
+				 "\n" );
+				libcnotify_printf(
+				 "%s: remaining node entries\n",
+				 function );
+			}
+			if( file_type == LIBPFF_FILE_TYPE_32BIT )
+			{
+				byte_stream_copy_to_uint32_little_endian(
+				 index_node_entry_data,
+				 value_64bit );
+			}
+			else if( file_type == LIBPFF_FILE_TYPE_64BIT )
+			{
+				byte_stream_copy_to_uint64_little_endian(
+				 index_node_entry_data,
+				 value_64bit );
+			}
+			libcnotify_printf(
+			 "%s: entry: %02" PRIu8 " index node identifier\t\t: 0x%08" PRIx64 " (%" PRIu64 ")\n",
+			 function,
+			 entry_index,
+			 value_64bit,
+			 value_64bit );
+
+			/* Process descriptor index node leaf nodes
+			 */
+			if( ( index_node->type == LIBPFF_INDEX_TYPE_DESCRIPTOR )
+			 && ( index_node->level == PFF_INDEX_NODE_LEVEL_LEAF ) )
+			{
+				if( file_type == LIBPFF_FILE_TYPE_32BIT )
+				{
+					byte_stream_copy_to_uint32_little_endian(
+					 ( (pff_index_node_descriptor_entry_32bit_t *) index_node_entry_data )->data_identifier,
+					 value_64bit );
+				}
+				else if( file_type == LIBPFF_FILE_TYPE_64BIT )
+				{
+					byte_stream_copy_to_uint64_little_endian(
+					 ( (pff_index_node_descriptor_entry_64bit_t *) index_node_entry_data )->data_identifier,
+					 value_64bit );
+				}
+				libcnotify_printf(
+				 "%s: entry: %02" PRIu8 " data identifier\t\t: 0x%08" PRIx64 " (%" PRIu64 ")\n",
+				 function,
+				 entry_index,
+				 value_64bit,
+				 value_64bit );
+
+				if( file_type == LIBPFF_FILE_TYPE_32BIT )
+				{
+					byte_stream_copy_to_uint32_little_endian(
+					 ( (pff_index_node_descriptor_entry_32bit_t *) index_node_entry_data )->local_descriptors_identifier,
+					 value_64bit );
+				}
+				else if( file_type == LIBPFF_FILE_TYPE_64BIT )
+				{
+					byte_stream_copy_to_uint64_little_endian(
+					 ( (pff_index_node_descriptor_entry_64bit_t *) index_node_entry_data )->local_descriptors_identifier,
+					 value_64bit );
+				}
+				libcnotify_printf(
+				 "%s: entry: %02" PRIu8 " local descriptors identifier\t: 0x%08" PRIx64 " (%" PRIu64 ")\n",
+				 function,
+				 entry_index,
+				 value_64bit,
+				 value_64bit );
+
+				if( file_type == LIBPFF_FILE_TYPE_32BIT )
+				{
+					byte_stream_copy_to_uint32_little_endian(
+					 ( (pff_index_node_descriptor_entry_32bit_t *) index_node_entry_data )->parent_identifier,
+					 value_32bit );
+				}
+				else if( file_type == LIBPFF_FILE_TYPE_64BIT )
+				{
+					byte_stream_copy_to_uint32_little_endian(
+					 ( (pff_index_node_descriptor_entry_64bit_t *) index_node_entry_data )->parent_identifier,
+					 value_32bit );
+				}
+				libcnotify_printf(
+				 "%s: entry: %02" PRIu8 " parent identifier\t\t: 0x%08" PRIx32 " (%" PRIu32 ")\n",
+				 function,
+				 entry_index,
+				 value_32bit,
+				 value_32bit );
+
+				if( file_type == LIBPFF_FILE_TYPE_64BIT )
+				{
+					byte_stream_copy_to_uint32_little_endian(
+					 ( (pff_index_node_descriptor_entry_64bit_t *) index_node_entry_data )->unknown1,
+					 value_32bit );
+
+					libcnotify_printf(
+					 "%s: entry: %02" PRIu8 " unknown1\t\t\t: 0x%08" PRIx32 " (%" PRIu32 ")\n",
+					 function,
+					 entry_index,
+					 value_32bit,
+					 value_32bit );
+				}
+			}
+			/* Process offset and descriptor index node branch nodes and offset index node leaf nodes
+			 */
+			else
+			{
+				if( index_node->level != PFF_INDEX_NODE_LEVEL_LEAF )
+				{
+					if( file_type == LIBPFF_FILE_TYPE_32BIT )
+					{
+						byte_stream_copy_to_uint32_little_endian(
+						 ( (pff_index_node_branch_entry_32bit_t *) index_node_entry_data )->back_pointer,
+						 value_64bit );
+					}
+					else if( file_type == LIBPFF_FILE_TYPE_64BIT )
+					{
+						byte_stream_copy_to_uint64_little_endian(
+						 ( (pff_index_node_branch_entry_64bit_t *) index_node_entry_data )->back_pointer,
+						 value_64bit );
+					}
+					libcnotify_printf(
+					 "%s: entry: %02" PRIu8 " back pointer\t\t\t: 0x%08" PRIx64 "\n",
+					 function,
+					 entry_index,
+					 value_64bit );
+				}
+				if( index_node->level == PFF_INDEX_NODE_LEVEL_LEAF )
+				{
+					if( file_type == LIBPFF_FILE_TYPE_32BIT )
+					{
+						byte_stream_copy_to_uint32_little_endian(
+						 ( (pff_index_node_offset_entry_32bit_t *) index_node_entry_data )->file_offset,
+						 value_64bit );
+					}
+					else if( file_type == LIBPFF_FILE_TYPE_64BIT )
+					{
+						byte_stream_copy_to_uint64_little_endian(
+						 ( (pff_index_node_offset_entry_64bit_t *) index_node_entry_data )->file_offset,
+						 value_64bit );
+					}
+				}
+				else
+				{
+					if( file_type == LIBPFF_FILE_TYPE_32BIT )
+					{
+						byte_stream_copy_to_uint32_little_endian(
+						 ( (pff_index_node_branch_entry_32bit_t *) index_node_entry_data )->file_offset,
+						 value_64bit );
+					}
+					else if( file_type == LIBPFF_FILE_TYPE_64BIT )
+					{
+						byte_stream_copy_to_uint64_little_endian(
+						 ( (pff_index_node_branch_entry_64bit_t *) index_node_entry_data )->file_offset,
+						 value_64bit );
+					}
+				}
+				libcnotify_printf(
+				 "%s: entry: %02" PRIu8 " file offset\t\t\t: 0x%08" PRIx64 " (%" PRIu64 ")\n",
+				 function,
+				 entry_index,
+				 value_64bit,
+				 value_64bit );
+
+				if( index_node->level == PFF_INDEX_NODE_LEVEL_LEAF )
+				{
+					if( file_type == LIBPFF_FILE_TYPE_32BIT )
+					{
+						byte_stream_copy_to_uint16_little_endian(
+						 ( (pff_index_node_offset_entry_32bit_t *) index_node_entry_data )->data_size,
+						 value_16bit );
+					}
+					else if( file_type == LIBPFF_FILE_TYPE_64BIT )
+					{
+						byte_stream_copy_to_uint16_little_endian(
+						 ( (pff_index_node_offset_entry_64bit_t *) index_node_entry_data )->data_size,
+						 value_16bit );
+					}
+					libcnotify_printf(
+					 "%s: entry: %02" PRIu8 " data size\t\t\t: %" PRIu16 "\n",
+					 function,
+					 entry_index,
+					 value_16bit );
+
+					if( file_type == LIBPFF_FILE_TYPE_32BIT )
+					{
+						byte_stream_copy_to_uint16_little_endian(
+						 ( (pff_index_node_offset_entry_32bit_t *) index_node_entry_data )->reference_count,
+						 value_16bit );
+					}
+					else if( file_type == LIBPFF_FILE_TYPE_64BIT )
+					{
+						byte_stream_copy_to_uint16_little_endian(
+						 ( (pff_index_node_offset_entry_64bit_t *) index_node_entry_data )->reference_count,
+						 value_16bit );
+					}
+					libcnotify_printf(
+					 "%s: entry: %02" PRIu8 " reference count\t\t: %" PRIu16 "\n",
+					 function,
+					 entry_index,
+					 value_16bit );
+
+					if( file_type == LIBPFF_FILE_TYPE_64BIT )
+					{
+						byte_stream_copy_to_uint32_little_endian(
+						 ( (pff_index_node_offset_entry_64bit_t *) index_node_entry_data )->data_allocation_table_file_offset,
+						 value_32bit );
+
+						libcnotify_printf(
+						 "%s: entry: %02" PRIu8 " data allocation table offset\t: 0x%08" PRIx32 " (%" PRIu32 ")\n",
+						 function,
+						 entry_index,
+						 value_32bit,
+						 value_32bit );
+					}
+				}
+			}
+			index_node_entry_data += index_node->entry_size;
+		}
+		libcnotify_printf(
+		 "\n" );
+	}
+#endif
+	return( 1 );
+}
+

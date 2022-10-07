@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="libpff">
+</Property><Property Name="Solution File" Value="D:\used\libpff-20120802\msvscpp\libpff.sln">
+</Property><Property Name="Date" Value="17. mart 2015">
+</Property><Property Name="Time" Value="21:01">
+</Property></Properties><Event ErrorLevel="0" Project="libpff_dll" Source="libpff_dll\libpff_dll.vcproj" Description="Converting project file 'D:\used\libpff-20120802\msvscpp\libpff_dll\libpff_dll.vcproj'.">
+</Event><Event ErrorLevel="1" Project="libpff_dll" Source="libpff_dll\libpff_dll.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="1" Project="libpff_dll" Source="libpff_dll\libpff_dll.vcproj" Description="MSB8012: $(TargetName) ('libpff_dll') does not match the Linker's OutputFile property value 'D:\used\libpff-20120802\msvscpp\Release\libpff.dll' ('libpff') in project configuration 'Release|Win32'. This may cause your project to build incorrectly. To correct this, please make sure that $(TargetName) property value matches the value specified in %(Link.OutputFile).">
+</Event><Event ErrorLevel="1" Project="libpff_dll" Source="libpff_dll\libpff_dll.vcproj" Description="MSB8012: $(TargetPath) ('D:\used\libpff-20120802\msvscpp\Release\libpff_dll.dll') does not match the Linker's OutputFile property value 'D:\used\libpff-20120802\msvscpp\Release\libpff.dll' ('D:\used\libpff-20120802\msvscpp\Release\libpff.dll') in project configuration 'Release|Win32'. This may cause your project to build incorrectly. To correct this, please make sure that $(TargetPath) property value matches the value specified in %(Link.OutputFile).">
+</Event><Event ErrorLevel="1" Project="libpff_dll" Source="libpff_dll\libpff_dll.vcproj" Description="MSB8012: $(TargetName) ('libpff_dll') does not match the Linker's OutputFile property value 'D:\used\libpff-20120802\msvscpp\VSDebug\libpff.dll' ('libpff') in project configuration 'VSDebug|Win32'. This may cause your project to build incorrectly. To correct this, please make sure that $(TargetName) property value matches the value specified in %(Link.OutputFile).">
+</Event><Event ErrorLevel="1" Project="libpff_dll" Source="libpff_dll\libpff_dll.vcproj" Description="MSB8012: $(TargetPath) ('D:\used\libpff-20120802\msvscpp\VSDebug\libpff_dll.dll') does not match the Linker's OutputFile property value 'D:\used\libpff-20120802\msvscpp\VSDebug\libpff.dll' ('D:\used\libpff-20120802\msvscpp\VSDebug\libpff.dll') in project configuration 'VSDebug|Win32'. This may cause your project to build incorrectly. To correct this, please make sure that $(TargetPath) property value matches the value specified in %(Link.OutputFile).">
+</Event><Event ErrorLevel="0" Project="libpff_dll" Source="libpff_dll\libpff_dll.vcproj" Description="Done converting to new project file 'D:\used\libpff-20120802\msvscpp\libpff_dll\libpff_dll.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="libpff_dll" Source="libpff_dll\libpff_dll.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="pffinfo" Source="pffinfo\pffinfo.vcproj" Description="Converting project file 'D:\used\libpff-20120802\msvscpp\pffinfo\pffinfo.vcproj'.">
+</Event><Event ErrorLevel="1" Project="pffinfo" Source="pffinfo\pffinfo.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="1" Project="pffinfo" Source="pffinfo\pffinfo.vcproj" Description="Attribute 'Detect64BitPortabilityProblems' of 'VCCLCompilerTool' is not supported in this version and has been removed during conversion.">
+</Event><Event ErrorLevel="1" Project="pffinfo" Source="pffinfo\pffinfo.vcproj" Description="Attribute 'Detect64BitPortabilityProblems' of 'VCCLCompilerTool' is not supported in this version and has been removed during conversion.">
+</Event><Event ErrorLevel="0" Project="pffinfo" Source="pffinfo\pffinfo.vcproj" Description="Done converting to new project file 'D:\used\libpff-20120802\msvscpp\pffinfo\pffinfo.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="pffinfo" Source="pffinfo\pffinfo.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="pffexport" Source="pffexport\pffexport.vcproj" Description="Converting project file 'D:\used\libpff-20120802\msvscpp\pffexport\pffexport.vcproj'.">
+</Event><Event ErrorLevel="1" Project="pffexport" Source="pffexport\pffexport.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="1" Project="pffexport" Source="pffexport\pffexport.vcproj" Description="Attribute 'Detect64BitPortabilityProblems' of 'VCCLCompilerTool' is not supported in this version and has been removed during conversion.">
+</Event><Event ErrorLevel="1" Project="pffexport" Source="pffexport\pffexport.vcproj" Description="Attribute 'Detect64BitPortabilityProblems' of 'VCCLCompilerTool' is not supported in this version and has been removed during conversion.">
+</Event><Event ErrorLevel="0" Project="pffexport" Source="pffexport\pffexport.vcproj" Description="Done converting to new project file 'D:\used\libpff-20120802\msvscpp\pffexport\pffexport.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="pffexport" Source="pffexport\pffexport.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="libuna" Source="libuna\libuna.vcproj" Description="Converting project file 'D:\used\libpff-20120802\msvscpp\libuna\libuna.vcproj'.">
+</Event><Event ErrorLevel="1" Project="libuna" Source="libuna\libuna.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="libuna" Source="libuna\libuna.vcproj" Description="Done converting to new project file 'D:\used\libpff-20120802\msvscpp\libuna\libuna.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="libuna" Source="libuna\libuna.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="libfmapi" Source="libfmapi\libfmapi.vcproj" Description="Converting project file 'D:\used\libpff-20120802\msvscpp\libfmapi\libfmapi.vcproj'.">
+</Event><Event ErrorLevel="1" Project="libfmapi" Source="libfmapi\libfmapi.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="libfmapi" Source="libfmapi\libfmapi.vcproj" Description="Done converting to new project file 'D:\used\libpff-20120802\msvscpp\libfmapi\libfmapi.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="libfmapi" Source="libfmapi\libfmapi.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="libbfio" Source="libbfio\libbfio.vcproj" Description="Converting project file 'D:\used\libpff-20120802\msvscpp\libbfio\libbfio.vcproj'.">
+</Event><Event ErrorLevel="1" Project="libbfio" Source="libbfio\libbfio.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="libbfio" Source="libbfio\libbfio.vcproj" Description="Done converting to new project file 'D:\used\libpff-20120802\msvscpp\libbfio\libbfio.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="libbfio" Source="libbfio\libbfio.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="libfdatetime" Source="libfdatetime\libfdatetime.vcproj" Description="Converting project file 'D:\used\libpff-20120802\msvscpp\libfdatetime\libfdatetime.vcproj'.">
+</Event><Event ErrorLevel="1" Project="libfdatetime" Source="libfdatetime\libfdatetime.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="libfdatetime" Source="libfdatetime\libfdatetime.vcproj" Description="Done converting to new project file 'D:\used\libpff-20120802\msvscpp\libfdatetime\libfdatetime.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="libfdatetime" Source="libfdatetime\libfdatetime.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="libcstring" Source="libcstring\libcstring.vcproj" Description="Converting project file 'D:\used\libpff-20120802\msvscpp\libcstring\libcstring.vcproj'.">
+</Event><Event ErrorLevel="1" Project="libcstring" Source="libcstring\libcstring.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="libcstring" Source="libcstring\libcstring.vcproj" Description="Done converting to new project file 'D:\used\libpff-20120802\msvscpp\libcstring\libcstring.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="libcstring" Source="libcstring\libcstring.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="libfdata" Source="libfdata\libfdata.vcproj" Description="Converting project file 'D:\used\libpff-20120802\msvscpp\libfdata\libfdata.vcproj'.">
+</Event><Event ErrorLevel="1" Project="libfdata" Source="libfdata\libfdata.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="libfdata" Source="libfdata\libfdata.vcproj" Description="Done converting to new project file 'D:\used\libpff-20120802\msvscpp\libfdata\libfdata.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="libfdata" Source="libfdata\libfdata.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="libfguid" Source="libfguid\libfguid.vcproj" Description="Converting project file 'D:\used\libpff-20120802\msvscpp\libfguid\libfguid.vcproj'.">
+</Event><Event ErrorLevel="1" Project="libfguid" Source="libfguid\libfguid.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="libfguid" Source="libfguid\libfguid.vcproj" Description="Done converting to new project file 'D:\used\libpff-20120802\msvscpp\libfguid\libfguid.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="libfguid" Source="libfguid\libfguid.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="libfwnt" Source="libfwnt\libfwnt.vcproj" Description="Converting project file 'D:\used\libpff-20120802\msvscpp\libfwnt\libfwnt.vcproj'.">
+</Event><Event ErrorLevel="1" Project="libfwnt" Source="libfwnt\libfwnt.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="libfwnt" Source="libfwnt\libfwnt.vcproj" Description="Done converting to new project file 'D:\used\libpff-20120802\msvscpp\libfwnt\libfwnt.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="libfwnt" Source="libfwnt\libfwnt.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="libcerror" Source="libcerror\libcerror.vcproj" Description="Converting project file 'D:\used\libpff-20120802\msvscpp\libcerror\libcerror.vcproj'.">
+</Event><Event ErrorLevel="1" Project="libcerror" Source="libcerror\libcerror.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="libcerror" Source="libcerror\libcerror.vcproj" Description="Done converting to new project file 'D:\used\libpff-20120802\msvscpp\libcerror\libcerror.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="libcerror" Source="libcerror\libcerror.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="libcfile" Source="libcfile\libcfile.vcproj" Description="Converting project file 'D:\used\libpff-20120802\msvscpp\libcfile\libcfile.vcproj'.">
+</Event><Event ErrorLevel="1" Project="libcfile" Source="libcfile\libcfile.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="libcfile" Source="libcfile\libcfile.vcproj" Description="Done converting to new project file 'D:\used\libpff-20120802\msvscpp\libcfile\libcfile.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="libcfile" Source="libcfile\libcfile.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="libclocale" Source="libclocale\libclocale.vcproj" Description="Converting project file 'D:\used\libpff-20120802\msvscpp\libclocale\libclocale.vcproj'.">
+</Event><Event ErrorLevel="1" Project="libclocale" Source="libclocale\libclocale.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="libclocale" Source="libclocale\libclocale.vcproj" Description="Done converting to new project file 'D:\used\libpff-20120802\msvscpp\libclocale\libclocale.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="libclocale" Source="libclocale\libclocale.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="libcpath" Source="libcpath\libcpath.vcproj" Description="Converting project file 'D:\used\libpff-20120802\msvscpp\libcpath\libcpath.vcproj'.">
+</Event><Event ErrorLevel="1" Project="libcpath" Source="libcpath\libcpath.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="libcpath" Source="libcpath\libcpath.vcproj" Description="Done converting to new project file 'D:\used\libpff-20120802\msvscpp\libcpath\libcpath.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="libcpath" Source="libcpath\libcpath.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="libcnotify" Source="libcnotify\libcnotify.vcproj" Description="Converting project file 'D:\used\libpff-20120802\msvscpp\libcnotify\libcnotify.vcproj'.">
+</Event><Event ErrorLevel="1" Project="libcnotify" Source="libcnotify\libcnotify.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="libcnotify" Source="libcnotify\libcnotify.vcproj" Description="Done converting to new project file 'D:\used\libpff-20120802\msvscpp\libcnotify\libcnotify.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="libcnotify" Source="libcnotify\libcnotify.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="libcsystem" Source="libcsystem\libcsystem.vcproj" Description="Converting project file 'D:\used\libpff-20120802\msvscpp\libcsystem\libcsystem.vcproj'.">
+</Event><Event ErrorLevel="1" Project="libcsystem" Source="libcsystem\libcsystem.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="libcsystem" Source="libcsystem\libcsystem.vcproj" Description="Done converting to new project file 'D:\used\libpff-20120802\msvscpp\libcsystem\libcsystem.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="libcsystem" Source="libcsystem\libcsystem.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="libfcache" Source="libfcache\libfcache.vcproj" Description="Converting project file 'D:\used\libpff-20120802\msvscpp\libfcache\libfcache.vcproj'.">
+</Event><Event ErrorLevel="1" Project="libfcache" Source="libfcache\libfcache.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="libfcache" Source="libfcache\libfcache.vcproj" Description="Done converting to new project file 'D:\used\libpff-20120802\msvscpp\libfcache\libfcache.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="libfcache" Source="libfcache\libfcache.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="libfvalue" Source="libfvalue\libfvalue.vcproj" Description="Converting project file 'D:\used\libpff-20120802\msvscpp\libfvalue\libfvalue.vcproj'.">
+</Event><Event ErrorLevel="1" Project="libfvalue" Source="libfvalue\libfvalue.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="libfvalue" Source="libfvalue\libfvalue.vcproj" Description="Done converting to new project file 'D:\used\libpff-20120802\msvscpp\libfvalue\libfvalue.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="libfvalue" Source="libfvalue\libfvalue.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="libcsplit" Source="libcsplit\libcsplit.vcproj" Description="Converting project file 'D:\used\libpff-20120802\msvscpp\libcsplit\libcsplit.vcproj'.">
+</Event><Event ErrorLevel="1" Project="libcsplit" Source="libcsplit\libcsplit.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="libcsplit" Source="libcsplit\libcsplit.vcproj" Description="Done converting to new project file 'D:\used\libpff-20120802\msvscpp\libcsplit\libcsplit.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="libcsplit" Source="libcsplit\libcsplit.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="libpff.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="libpff.sln" Description="Converted">
+</Event></UpgradeLog>
